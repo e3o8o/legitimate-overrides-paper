@@ -1,6 +1,6 @@
 # Legitimate Overrides in Decentralized Protocols
 
-**Paper repository for Elem Oghenekaro & Nimrod Talmon - "Legitimate Overrides in Decentralized Protocols"**  
+**Paper repository for Oghenekaro Elem & Nimrod Talmon - "Legitimate Overrides in Decentralized Protocols"**  
 *Focus: Emergency governance mechanisms and legitimacy trade-offs in decentralized systems*
 
 > "That which is measured improves. That which is measured and reported improves exponentially."
@@ -16,7 +16,7 @@
 - 52 curated metrics cases with verified timing and outcomes
 
 ### Key Findings
-- **Power Law Distribution**: Losses follow fat-tailed distribution (α=1.32)
+- **Power Law Distribution**: Losses follow fat-tailed distribution (α=1.33)
 - **Speed-Scope-Success Paradox**: Trade-offs between response speed, scope, and effectiveness
 - **Authority Performance**: Signer Set (fast, frequent), Delegated Body (balanced), Governance (deliberate but high success for network scope)
 
