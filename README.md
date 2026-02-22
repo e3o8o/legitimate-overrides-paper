@@ -103,7 +103,7 @@ pdflatex main_concise.tex  # finalize cross-references
 ## Related Projects
 
 - **LIF Website & Open-Source Data**: https://github.com/parametrig/legitimate-intervention-framework  
-  Interactive website, full dataset, and analysis notebooks for the Legitimate Intervention Framework.
+  Interactive website - https://lif-research.org/, full dataset, and analysis notebooks for the Legitimate Intervention Framework.
 
 ---
 
