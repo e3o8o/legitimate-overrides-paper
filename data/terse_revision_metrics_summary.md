@@ -18,7 +18,7 @@ Generated from `data/lif_intervention_metrics.csv` for the TERSE revision pass.
 
 ## Prediction 2 proxy check
 
-Operationalization used for the TERSE revision: treat scope breadth as a proxy for blast potential, and compare narrower interventions (Account/Module) against broader interventions (Protocol/Network). Asset scope is excluded from this proxy because issuer-controlled freezes and bridge-specific asset controls are not directly comparable to protocol/network shutdown behavior.
+Operationalization used for the TERSE revision: treat scope breadth as a proxy for blast potential, and compare narrower interventions (Account/Module) against broader interventions (Protocol/Network). Note that Asset scope is excluded from this proxy because issuer-controlled freezes and bridge-specific asset controls are not directly comparable to protocol/network shutdown behavior.
 
 - Precise scope proxy (Account/Module): n=18, mean success=43.5%, median success=25.8%, median containment time=90.0 minutes
 - Broad scope proxy (Protocol/Network): n=27, mean success=40.4%, median success=10.0%, median containment time=114.0 minutes

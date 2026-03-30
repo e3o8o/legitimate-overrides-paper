@@ -3,6 +3,8 @@
 % Compile main.tex directly for FULL version (\concisefalse)
 % Compile main_concise.tex for CONCISE version (\concisetrue)
 % ---------------------------------------------------------------
+\def\terseversion{1} % TO comment out this line for the public [arXiv] release and hide the Governance Coding appendix
+
 \ifdefined\conciseversion
   \documentclass[12pt]{article}
 \else
@@ -64,7 +66,7 @@ We address this gap by developing a \emph{Scope $\times$ Authority} taxonomy tha
 We formalize the resulting tradeoffs of standing centralization cost, containment speed, and collateral disruption as a stochastic decision-support framework, and derive three empirical hypotheses from it.
 Assessing the framework against 705 documented exploit incidents, we find that containment time varies systematically by authority type, that losses follow a heavy-tailed distribution ($\alpha \approx 1.33$) concentrating risk in rare catastrophic events, and that community sentiment plausibly modulates the effective cost of maintaining intervention capability. Using scope breadth as a practical proxy for blast potential, we also find that narrower interventions (Account/Module) do not underperform broader ones (Protocol/Network) on containment success and are slightly faster at the median, giving partial empirical support to the scope-blast hypothesis.
 The analysis yields design guidance for emergency governance and reframes the problem as one of engineering tradeoffs rather than ideological debate.
-\elem{Revised the abstract to align with the reviewers' concern that the model is better presented as a decision-support framework than as a fully estimable optimization. I also replaced the earlier ``future work'' placeholder on Prediction 2 with a modest proxy-based test using scope breadth, rather than overstating that the blast-radius relationship is fully measured.}
+
 %
 \ifconcise
 An extended version of this paper with detailed incident analysis, supplementary figures, and expanded discussion is available \href{https://github.com/e3o8o/legitimate-overrides-paper/blob/main/paper/main.pdf}{\textcolor{blue}{here}}.
@@ -111,7 +113,7 @@ These are our main contributions:
     \item \textbf{Decision support framework.} We formalize the trade-offs between standing centralization and blast radius into a quantitative decision-support model and provide an open-source \emph{Intervention Mechanism Calculator}. 
     This tool enables protocol designers to calibrate mechanism selection based on community sentiment and estimated threat probabilities.\footnote{The tool is available \href{https://github.com/e3o8o/legitimate-overrides-paper/blob/main/notebooks/paper_analysis_complete.ipynb}{\textcolor{blue}{here}}.}
 \end{itemize}
-\elem{Adjusted the contribution language to match the more modest framing requested by the reviewers.}
+
 
 \ifconcise
 \paragraph{Roadmap.}
@@ -574,7 +576,7 @@ This ordering aligns with intuition: concentrated authority enables faster respo
     \caption{\textbf{Intervention Success Rates.} Comparison of containment success across authority types. In our verified sample, Delegated Body interventions show a higher containment success rate than Signer Set interventions, while Governance-tagged cases represent a small, mixed subset that often includes recovery after earlier containment or offchain negotiation. Right panel shows total losses prevented by authority type.}
     \label{fig:intervention_effectiveness}
 \end{figure}
-\elem{Corrected the Figure 6 caption issue flagged by the reviewers. The old caption inverted the Signer Set and Delegated Body comparison. The revised caption also warns that the Governance bucket is mixed and small.}
+
 
 
 \ifconcise\else
@@ -638,7 +640,7 @@ where $\bar{s} \in [-1, 1]$ is the average sentiment score. Positive sentiment r
 
 \ifconcise
 Our 52 verified cases reveal a paradox: Signer Sets dominate volume (38 cases, 73.1\%) but achieve only 38.0\% containment success, while the Governance-coded subset reaches 87.8\% on a much smaller sample (5 cases). That Governance figure should be read cautiously. It is a mixed constitutional/recovery bucket, not a pure instant-containment benchmark. In the revised coding, we exclude Aave v2 and Alpha Homora V2 from Governance because their operative intervention path was guardian-style in the former case and core-team-led in the latter, rather than collective governance. Even among the remaining five cases, some still combine governance authorization with earlier freezes or delayed recovery stages. This reframes the ``Immutability Paradox'' as a \emph{Scope-Authority Matching} problem: protocols fail not because governance is ``slow,'' but because they deploy Direct Democratic mechanisms for Oligarchic tasks (fast containment) while underutilizing them for Constitutional tasks (network recovery).
-\elem{I strengthened the coding fix by correcting two rows in the high-fidelity dataset that had been overstated as Governance. Aave v2 is now classified as Delegated Body; Alpha Homora V2 is now classified as Signer Set. The cleaned Governance-coded subset is therefore 5 cases with mean containment success 87.8\%, still described cautiously because the bucket remains mixed/hybrid rather than a pure direct-governance containment benchmark.}
+
 \else
 \subsection{Empirical Support for the Political Analogy: The Speed-Scope-Success Paradox}
 \label{subsec:polia-validation}
@@ -695,7 +697,7 @@ Additionally, Curve Finance's July 2023 \$62M exploit response was managed via i
 MakerDAO (now Sky) famously specified an Emergency Shutdown Module (ESM) intended as a last-resort protection mechanism. Shutdown was governed by protocol-defined triggers (via the ESM) and aimed to unwind positions and return collateral to users. However, Sky has since deprecated the ESM mechanism~\cite{MakerDAOEmergencyShutdown}, illustrating that such ``nuclear options'', while theoretically robust, are difficult to maintain due to the game-theoretic risks of malicious triggering and the immense coordination cost of unwinding state.
 
 Similarly, Euler Finance (March 2023) exemplified the ``Protocol/Governance'' tension: lacking an immediate admin override, the protocol was drained of \$197M. Recovery required a high-pressure offchain negotiation (``social layer intervention'') to compel the return of funds~\cite{Euler2023Exploit}, highlighting that pure governance architectures often rely on legal or social backstops when onchain speed is insufficient. We therefore do not treat Euler as a clean example of onchain governance containment. It is better understood as a recovery case in which negotiation dominated the resolution path.
-\elem{Made the Euler treatment explicit in response to the reviewer's concern. The revised text no longer lets Euler silently stand in as a pure governance-success case.}
+
 
 \paragraph{The Balancer Case and Window Expiry.}
 The November 2025 Balancer V2 exploit provides a nuanced illustration of protocol-scope safety. Composable Stable Pools (CSP) in V2 were designed with fixed pause windows to ensure eventual immutability. In pools where these windows had expired (CSPv5), the exploit succeeded because emergency pausing was no longer technically possible. Conversely, in CSPv6 pools where pause windows remained active, following \emph{Hypernative} detection of the attack, the team successfully triggered a pause, containing the loss. This contrast highlights a core design trade-off: fixed-length pause windows improve ``liveness'' and perceived immutability but reduce the ability to intervene against vulnerabilities discovered after deployment. Later iterations, such as Balancer's V3 newer architecture, introduced a dedicated emergency governance layer, \emph{Emergency subDAO}, to manage these powers with clearer delegation and mandate limits~\cite{BalancerPostMortem2025,BalancerV3EmergencySubDAO}. The Cork Protocol incident in May 2025, triggered by a Uniswap v4 hook exploit, illustrates how a ``Protocol $\times$ Signer Set'' emergency mode can still mitigate novel threats: after an alert, the team convened an emergency war room with external security partners, SEAL911, and paused remaining markets within roughly an hour, limiting further losses even though the initial exploit had already drained funds from the targeted market~\cite{CorkPostMortem2025}.\footnote{SEAL911 is a security ``hotline'' and rapid-response coordination channel run by members of the Security Alliance (SEAL), where protocols, users, and auditors can raise active or imminent incidents so that experienced responders can help triage, coordinate a war room, and mitigate attacks as they unfold. It operates under the Whitehat Safe Harbor Agreement (SHA), which provides legal protections for good-faith responders assisting in incident mitigation and fund recovery~\cite{seal911github,dedaubseal,piperwhitehat}.}
@@ -731,7 +733,7 @@ Similar coordination occurred in the November~30, 2025 Yearn yETH exploit. To re
 
 \paragraph{Governance Process: Stake-Weighted Vote.}
 The May 2025 Cetus exploit on Sui (\$220M stolen) produced the most rigorous governance-authorized account intervention to date. After validators initially froze \$162M by refusing to process transactions from two attacker addresses (a Delegated Body action), Cetus called for a community vote to authorize a protocol upgrade that would recover the frozen funds. The Sui Foundation abstained to maintain neutrality, and the vote concluded with \textbf{90.9\% of stake} voting ``Yes''~\cite{SuiCetusVote,UnchainedCetus2025}. The recovered funds were transferred to a 4-of-6 multisig (Cetus, Sui Foundation, OtterSec) for distribution. This is a hybrid case. The delegated freeze provided the first containment, while governance supplied the explicit mandate for recovery and redistribution.
-\elem{Clarified Sui/Cetus as a two-stage hybrid instead of letting the governance label absorb the entire response. This was one of the reviewer's main coding concerns.}
+
 
 \paragraph{The VeChain Classification Dispute.}
 The distinction between ``admin freeze'' and ``governance-led blocklist'' is not merely semantic but central to legitimacy. Following Bybit's categorization of VeChain as having ``hidden freezing capabilities''~\cite{ByBit2025SecurityReport}, VeChain publicly refuted this, clarifying that their mechanism is a validator-enforced blocklist authorized by community governance (originally voted in December 2019 following a theft), rather than a unilateral admin key~\cite{VeChain2025Refutation}. This dispute highlights the \emph{Authority} axis of our taxonomy: two mechanisms may achieve the same \emph{Scope} (account freezing) but differ fundamentally in their \emph{Authority} source (Signer Set vs. Governance), drastically altering their perceived centralization cost.
@@ -747,7 +749,7 @@ Our empirical analysis supports all three predictions of the expected cost model
     \item \textbf{Sentiment modulates centralization cost:} Positive community acceptance reduces effective standing costs, validating the culture multiplier.
     \item \textbf{Narrower scope does not appear to sacrifice containment:} Using scope breadth as a proxy for blast potential, Account/Module interventions outperform Protocol/Network interventions on median containment success (25.8\% vs.\ 10.0\%), show slightly higher mean containment success (43.5\% vs.\ 40.4\%), and achieve a slightly faster median containment time (90 vs.\ 114 minutes). This is a proxy test, not a direct estimate of market-wide collateral loss, but it is consistent with Prediction 2 rather than contradicting it.
 \end{enumerate}
-\elem{I replaced the previous ``future work'' treatment of Prediction 2 with a narrower empirical proxy test computed from the high-fidelity intervention subset. The claim is still bounded: we are testing scope breadth as a blast-potential proxy, not claiming a fully measured collateral-loss model.}
+
 \fi
 
 
@@ -773,10 +775,10 @@ The expected cost function $\ExpectedCost(m)$ reveals a non-monotonic relationsh
 The emergence of \emph{Emergency subDAOs} (pioneered by Curve, adopted by Balancer V3, and variants like Aave's Protocol Guardians) reflects practitioner convergence toward this sweet spot.
 These bodies operate under explicit mandates, time-bounded powers, and reporting requirements, features that reduce $\CentralizationCost(m)$ while preserving containment speed.
 
-\begin{remark}[Legitimacy is not only a cost term]
-Several cases in our dataset suggest that legitimacy is built through process and post-crisis conduct, not only through ex ante mechanism choice. StakeWise's later renunciation vote and the Sui Foundation's abstention both matter because they shape how intervention authority is interpreted after the fact. The cost model captures part of this through sentiment, but it should not be read as a complete account of legitimacy formation.
+\begin{remark}[Legitimacy extends beyond a cost term]
+Several cases in our dataset suggest that legitimacy emerges actively through process and post-crisis conduct, extending beyond ex ante mechanism choice. StakeWise's later renunciation vote and the Sui Foundation's abstention both matter because they shape how intervention authority is interpreted after the fact. The cost model captures part of this through sentiment, though it serves as a partial account of legitimacy formation rather than a comprehensive one.
 \end{remark}
-\elem{Added a boundary condition in response to the reviewer comment that legitimacy is often produced through process, not only through ex ante cost tradeoffs.}
+
 
 
 \subsection{Scope Matters: Precision Reduces Blast Radius}
@@ -785,7 +787,7 @@ Several cases in our dataset suggest that legitimacy is built through process an
 Our taxonomy distinguishes five levels of scope, from network-wide halts to account-level freezes.
 
 The empirical data supports a narrower version of the blast-radius claim than we originally stated. Using scope breadth as a proxy for blast potential, Account/Module interventions do not underperform Protocol/Network interventions on containment outcomes. In the 52-case high-fidelity subset, narrower interventions show slightly higher mean containment success (43.5\% vs.\ 40.4\%), materially higher median containment success (25.8\% vs.\ 10.0\%), and slightly faster median containment time (90 vs.\ 114 minutes). This is not a direct measure of total collateral disruption, but it is consistent with the design intuition that more precise interventions can preserve response quality without requiring broader shutdowns.
-\elem{Strengthened the scope section using an explicit proxy analysis run against `lif_intervention_metrics.csv`. The revised text no longer claims a direct blast-radius measurement; it claims a proxy-based test using scope breadth.}
+
 For protocol designers, this implies:
 
 \begin{itemize}
@@ -866,7 +868,7 @@ This convergence between our theoretical model, practitioner intuition, and the 
 \begin{remark}[Scope limits of the cost model]
 Two limits matter for interpretation. First, variables such as $\CentralizationCost(m)$ and $\BlastRate(m)$ are best treated as structured thinking tools, not as directly observable quantities that a protocol designer can estimate with high confidence. Second, some influential resolution channels remain partly outside the model. Negotiation, legal pressure, attacker cooperation, and law-enforcement action may dominate the outcome in cases such as Euler or Ronin. This paper treats those channels as external complements or competitors to onchain intervention rather than as fully modeled mechanism choices.
 \end{remark}
-\elem{Added an explicit scope note to address the reviewer's concern that the optimization variables risk sounding more measurable than they really are, and that offchain channels need to be acknowledged rather than silently absorbed into onchain categories.}
+
 
 We propose that protocol designers use our stochastic model as a decision support tool:
 
@@ -881,7 +883,7 @@ This framework moves emergency governance from ideology (``decentralization good
 \begin{remark}[Audit-status limitation]
 Audit status is only a coarse proxy for exploit probability. Audits are scoped to known vulnerability classes, and auditor incentives are not aligned with honest probability estimation. Multiple incidents in our own dataset, including compromised developer hardware and signature-bypass cases, fall outside standard audit coverage by construction. Any use of audit status in the calculator should therefore be treated as a heuristic feature, not as a calibrated probability estimate.
 \end{remark}
-\elem{Added the audit-status limitation explicitly, as requested by the reviewer.}
+
 
 
 \section{Conclusion}
@@ -893,7 +895,7 @@ First, we introduced a compact \emph{Scope $\times$ Authority} taxonomy that org
 Second, we formalized the underlying design tradeoff as a stochastic decision-support framework that balances standing centralization cost, containment speed, and collateral disruption, and from it derived three empirical hypotheses.
 Third, we assessed this framework against 705 documented exploit incidents (2016--2026), finding that containment time varies systematically by authority type, that losses follow a power-law distribution concentrating risk in rare ``super-hacks,'' and that community sentiment measurably modulates the effective cost of intervention capability. We also find modest empirical support for the scope-blast hypothesis when scope breadth is used as a proxy for blast potential: narrower interventions do not appear to sacrifice containment performance and are slightly faster at the median.
 Together, these results reframe emergency governance as a quantitative engineering problem rather than an ideological binary, and provide actionable guidance on delegation sweet spots, precision instrumentation, culture-aware calibration, and conditional sunset clauses for protocol designers navigating the immutability--intervention paradox.
-\elem{Softened the conclusion so it matches the revised abstract and summary. The paper now claims a decision-support framework plus partial empirical validation, not a fully resolved optimization result.}
+
 
 
 \ifconcise\else
@@ -1045,6 +1047,10 @@ VeChain's mechanism is a validator-enforced blocklist authorized by community go
 \item \textbf{Dynamic Mechanism Selection.} Adaptive approaches based on real-time threat assessment.
 \end{itemize}
 
+\fi
+%% ---- END CONCISE-MODE APPENDIX ----
+
+\ifdefined\terseversion
 \section{Appendix: Governance Coding Notes for the TERSE Revision}
 \label{app:governance-coding}
 
@@ -1082,9 +1088,7 @@ Alpha Homora V2 / Iron Bank pause & Signer Set & The operative intervention path
 \caption{\textbf{Cases reclassified out of the Governance bucket.} These rows were corrected during the TERSE revision so that the Governance subset better reflects collective authorization rather than guardian/admin intervention.}
 \label{tab:governance-reclassified-terse}
 \end{table}
-
 \fi
-%% ---- END CONCISE-MODE APPENDIX ----
 
 \bibliographystyle{plain}
 \bibliography{bib}

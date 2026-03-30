@@ -49,6 +49,4 @@ That means:
 - Interpretation fix:
   delegated freeze came first; governance supplied the later recovery authorization
 
-## Why this matters
-
-The reviewer was right that the governance success-rate claim was too loose if it silently aggregated hybrid, guardian, and negotiated cases without saying so. The revised coding narrows the Governance subset and makes the remaining cases auditable.
+The reviewer was right that the governance success-rate claim was too loose if it silently aggregated hybrid, guardian, and negotiated cases without saying so. This revised coding narrows the Governance subset and makes the remaining cases auditable.
